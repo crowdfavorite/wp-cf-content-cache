@@ -67,6 +67,11 @@ function cfcc_the_content_set_cache($content) {
 	return $content;
 }
 
+function cfcc_save_post($post_id) {
+	delete_transient(cfcc_transient_key($post_id));
+}
+add_action('save_post', 'cfcc_save_post');
+
 function cfcc_request_handler() {
 	if (!empty($_POST['cf_action'])) {
 		switch ($_POST['cf_action']) {
