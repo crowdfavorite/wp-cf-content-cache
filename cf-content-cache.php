@@ -10,7 +10,7 @@ Author URI: http://crowdfavorite.com
 
 // ini_set('display_errors', '1'); ini_set('error_reporting', E_ALL);
 
-define('CF_CONTENT_CACHE_LOG', true);
+define('CF_CONTENT_CACHE_LOG', false);
 
 load_plugin_textdomain('cf-content-cache');
 
@@ -224,6 +224,9 @@ function cfcc_update_settings() {
 				break;
 		}
 		update_option($key, $value);
+	}
+	if (function_exists('wpcom_is_vip')) {
+		return;
 	}
 	global $wpdb;
 	$transients = $wpdb->get_col("
