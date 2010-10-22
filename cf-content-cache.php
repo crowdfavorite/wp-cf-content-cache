@@ -3,7 +3,7 @@
 Plugin Name: CF Content Cache 
 Plugin URI:  
 Description: Cache post/page content for a configurable time limit. 
-Version: 1.0 
+Version: 1.1 
 Author: Crowd Favorite
 Author URI: http://crowdfavorite.com
 */
@@ -91,7 +91,8 @@ $cfcc_settings = array(
 		'type' => 'int',
 		'label' => 'Cache post content for how many seconds?',
 		'default' => '3600',
-		'help' => 'Example: 1 hour = 3600, 3 hours = 10800',
+		'help' => 'Example: 1 hour = 3600, 3 hours = 10800. Minimum = 600.',
+		'minimum' => '600'
 	),
 );
 
@@ -210,6 +211,9 @@ function cfcc_update_settings() {
 		switch ($option['type']) {
 			case 'int':
 				$value = intval($_POST[$key]);
+				if (intval($value) < intval($option['minimum'])) {
+					$value = intval($option['minimum']);
+				}
 				break;
 			case 'select':
 				$test = stripslashes($_POST[$key]);
@@ -228,6 +232,7 @@ function cfcc_update_settings() {
 	if (function_exists('wpcom_is_vip')) {
 		return;
 	}
+	/* Removing for VIP needs until a check is in place
 	global $wpdb;
 	$transients = $wpdb->get_col("
 		SELECT option_name
@@ -239,6 +244,7 @@ function cfcc_update_settings() {
 			delete_transient(str_replace('_transient_', '', $transient));
 		}
 	}
+	*/
 }
 
 //a:23:{s:11:"plugin_name";s:16:"CF Content Cache";s:10:"plugin_uri";N;s:18:"plugin_description";s:54:"Cache post/page content for a configurable time limit.";s:14:"plugin_version";s:3:"1.0";s:6:"prefix";s:4:"cfcc";s:12:"localization";s:16:"cf-content-cache";s:14:"settings_title";s:25:"CF Content Cache Settings";s:13:"settings_link";s:16:"CF Content Cache";s:4:"init";b:0;s:7:"install";b:0;s:9:"post_edit";b:0;s:12:"comment_edit";b:0;s:6:"jquery";b:0;s:6:"wp_css";b:0;s:5:"wp_js";b:0;s:9:"admin_css";b:0;s:8:"admin_js";b:0;s:8:"meta_box";b:0;s:15:"request_handler";b:0;s:6:"snoopy";b:0;s:11:"setting_cat";b:0;s:14:"setting_author";b:0;s:11:"custom_urls";b:0;}
