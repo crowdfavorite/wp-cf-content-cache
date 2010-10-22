@@ -3,7 +3,7 @@
 Plugin Name: CF Content Cache 
 Plugin URI:  
 Description: Cache post/page content for a configurable time limit. 
-Version: 1.0 
+Version: 1.1 
 Author: Crowd Favorite
 Author URI: http://crowdfavorite.com
 */
@@ -91,7 +91,8 @@ $cfcc_settings = array(
 		'type' => 'int',
 		'label' => 'Cache post content for how many seconds?',
 		'default' => '3600',
-		'help' => 'Example: 1 hour = 3600, 3 hours = 10800',
+		'help' => 'Example: 1 hour = 3600, 3 hours = 10800. Minimum = 600.',
+		'minimum' => '600'
 	),
 );
 
@@ -210,6 +211,9 @@ function cfcc_update_settings() {
 		switch ($option['type']) {
 			case 'int':
 				$value = intval($_POST[$key]);
+				if (intval($value) < intval($option['minimum'])) {
+					$value = intval($option['minimum']);
+				}
 				break;
 			case 'select':
 				$test = stripslashes($_POST[$key]);
