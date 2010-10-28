@@ -29,13 +29,15 @@ function cfcc_the_content_placebo($content) {
 }
 add_filter('the_content', 'cfcc_the_content_placebo', 0);
 
-function cfcc_the_content_reset_filters($post) {
+function cfcc_the_content_reset_filters($null = null) {
 	global $wp_filter, $cfcc_the_content_filters;
 	if (!is_null($cfcc_the_content_filters)) {
 		$wp_filter['the_content'] = $cfcc_the_content_filters;
 	}
+	return $null;
 }
 add_action('the_post', 'cfcc_the_content_reset_filters');
+add_filter('the_excerpt_rss', 'cfcc_the_content_reset_filters');
 
 function cfcc_the_content_get_cache($content) {
 	global $wp_filter, $cfcc_the_content_filters;
